@@ -1,0 +1,30 @@
+---
+# tasks file for installing prometheus on centos7
+
+
+- name: make sure /opt/app/prometheus directory exists
+  file: path=/opt/app/prometheus state=directory
+
+- name: make sure {{ prometheus_data_path }} directory exists
+  file: path={{ prometheus_data_path }} state=directory
+
+- name: uncompress package
+  shell: tar -zxf /opt/download/{{ prometheus_tgz_file_name }}.tar.gz -C /opt/app/prometheus
+
+- name: make link
+  file: src=/opt/app/prometheus/{{ prometheus_tgz_file_name }} dest=/opt/prometheus state=link
+
+- name: init /lib/systemd/system/prometheus.service
+  template: src=lib/systemd/system/prometheus.service.j2 dest=/lib/systemd/system/prometheus.service backup=yes
+  notify: reload prometheus
+
+- name: init /opt/prometheus/prometheus.yml
+  template: src=opt/prometheus/prometheus.yml.j2 dest=/opt/prometheus/prometheus.yml backup=yes
+  notify: restart prometheus
+
+- name: start and enable prometheus
+  service: name=prometheus state=started enabled=yes
+
+- name: check if prometheus is running
+  shell: systemctl status prometheus | grep running
+

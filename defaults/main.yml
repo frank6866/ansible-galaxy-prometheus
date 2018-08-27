@@ -1,0 +1,15 @@
+---
+# defaults file for prometheus
+
+prometheus_tgz_file_name: prometheus-2.2.1.linux-amd64
+prometheus_data_path: /data/prometheus
+prometheus_retention: 366d
+
+prometheus_scrape_interval: 15s
+prometheus_evaluation_interval: 15s
+
+
+
+
+
+
