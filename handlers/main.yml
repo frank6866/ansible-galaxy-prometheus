@@ -2,7 +2,4 @@
 # handlers file for prometheus
 
 - name: reload prometheus
-  systemd: name=prometheus state=restarted daemon_reload=yes
-
-- name: restart prometheus
-  service: name=prometheus state=restarted
+  shell: systemctl daemon-reload; systemctl enable prometheus; systemctl restart prometheus; systemctl status prometheus | grep running

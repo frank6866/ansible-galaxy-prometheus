@@ -20,11 +20,9 @@
 
 - name: init /opt/prometheus/prometheus.yml
   template: src=opt/prometheus/prometheus.yml.j2 dest=/opt/prometheus/prometheus.yml backup=yes
-  notify: restart prometheus
+  notify: reload prometheus
 
 - name: start and enable prometheus
   service: name=prometheus state=started enabled=yes
 
-- name: check if prometheus is running
-  shell: systemctl status prometheus | grep running
 
